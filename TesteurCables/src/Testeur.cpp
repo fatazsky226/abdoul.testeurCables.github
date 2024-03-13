@@ -1,7 +1,5 @@
-#include "Testeur.hpp"
 #include <Arduino.h>
-
-using namespace std;
+#include "Testeur.hpp"
 
 Testeur::Testeur(int * pinDroiteCable, int * pinGaucheCable, bool etat_ , type_Cable cables)
 {
@@ -11,34 +9,34 @@ Testeur::Testeur(int * pinDroiteCable, int * pinGaucheCable, bool etat_ , type_C
     type = cables; 
 }
 
-Testeur::~Testeur()
-{
+Testeur::~Testeur(){}
+
+void Testeur::initialisation() {
+
 }
 
-Testeur::initialisation() {
+void Testeur::setEtat(bool val){ etat= val;}
 
-    
-}
+void Testeur::setType( type_Cable valtype){ type=valtype;}
 
 void Testeur::typeCable()
 {   
+    int data[8];
 
-    for (int i = 0; i < 7; i++)
-    {
-        /* code */
-            pinMode(pinD[i], OUTPUT);
-            pinMode(pinG[j], INPUT_PULLDOWN);
-
-    }
-    
     for(int i = 0; i < 8; i++)
     {
         for(int j = 0; j < 8; j++)
-        {
-            digitalWrite(pinD[i], HIGH);
+        {   
+            int pDroit = *(pinDroit + i);
+            int pGauche = *(pinGauche + j);
+
+            pinMode(pDroit, OUTPUT);
+            pinMode(pGauche, INPUT_PULLDOWN);
+
+            digitalWrite(pDroit, HIGH);
             delay(100);
 
-            int etat = digitalRead(pinG[j]);
+            int etat = digitalRead(pGauche);
             int readValue = 0;
 
             if(etat == HIGH)
@@ -46,29 +44,45 @@ void Testeur::typeCable()
             else
                 readValue = 0;
             
-            digitalWrite(pinD[i], LOW);
-            delay(100);
+            digitalWrite(pDroit, LOW);
+
+            if (readValue == 1)
+            {
+                data[i] = j;
+                break;
+            }
         }
+    }
+
+    bool estEnOrdre = true;
+
+    for (int i = 0; i < 8; i++)
+    {
+        if (data[i] > data[i + 1])
+        {
+            estEnOrdre = false;
+        }
+    }
+    
+    if (estEnOrdre)
+    {
+        setEtat(true);
+        setType(Droit);
+    }
+
+    else if( data[0]==2 && data[1]==5 && data[2]== 0 && data[3]== 3 && data[4]== 4 && data[5]== 1 && data[6]==6 && data[7]==7){
+        setEtat(true);
+        setType(Croisee);
+    }
+
+    else 
+    {
+        setEtat(false);
+        setType(Anormal);
     }
 }
 
 void Testeur::affichage()
 {
-    for (int i = 0; i < 8; i++) 
-    { 
-        pinMode(pinDroit[i], OUTPUT);
-        digitalWrite(pinDroit[i], HIGH); //envoyer le signal
-
-        int etat = digitalRead(pinGauche[i]); // lire l'état de la broche
-
-        if (etat == HIGH) {
-            Serial.println("Le cable est bien brancher ");
-        }
-        else {
-            Serial.println("Le cable n'est pas bien brancher ");
-        }
-
-        digitalWrite(pinDroit[i], LOW); //initialise les broches
-    }
 
 }
