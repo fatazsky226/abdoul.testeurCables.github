@@ -1,7 +1,7 @@
 #ifndef TESTEUR_H
 #define TESTEUR_H
 
-
+// Definition de la classe
 class Testeur
 {
 
@@ -25,7 +25,7 @@ class Testeur
 
         ~Testeur(); // Destructeur 
 
-        float recherche(); 
+        float recherche(); // fonction de la recherche de la position du signal obtenu
 
        // Fonction qui teste le cable et le type du cable
         void typeCable();

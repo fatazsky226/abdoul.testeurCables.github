@@ -9,3 +9,9 @@ in the development cycle.
 
 More information about PlatformIO Unit Testing:
 - https://docs.platformio.org/en/latest/advanced/unit-testing/index.html
+
+
+Etape 1: clone le projet dans votre espace de travail
+Etape 2: faire le branchement
+Etape 3: Faire la configuration de vos pins selon votre branchement
+Etape 4: Exécuter le programme

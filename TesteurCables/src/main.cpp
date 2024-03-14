@@ -1,6 +1,13 @@
 #include<Arduino.h>
 #include"Testeur.hpp"
 
+/*
+L'ordre des couleur 
+OrangeBlanc: PIN01;     orange: PIN02;     VertBlanc: PIN03;    Bleu: PIN04
+bleuBlanc  : PIN05;     vert  : PIN06;     marronblanc: PIN07;  marron: PIN08
+*/
+
+// Définition des broches d'entrée
 #define PINI1 15
 #define PINI2 2
 #define PINI3 4
@@ -10,7 +17,7 @@
 #define PINI7 21
 #define PINI8 22
 
-// Declaration des pins du deuxième coté
+// Définition des broches de sortie
 #define PINO1 13
 #define PINO2 14
 #define PINO3 27
@@ -20,12 +27,16 @@
 #define PINO7 32
 #define PINO8 12
 
+// 
 
+// Tableau des broches d'entrée
 int pinI[]= {PINI1, PINI2, PINI3, PINI4, PINI5, PINI6, PINI7, PINI8 };
 
+// Tableau des broches de sortie
 int pinO[]= {PINO1, PINO2, PINO3, PINO4, PINO5, PINO6, PINO7, PINO8 };
 
-        Testeur testeur(pinO, pinI);
+// Création d'une instance de la classe Testeur avec les broches d'entrée et de sortie
+Testeur testeur(pinO, pinI);
 
 void setup(){
 
@@ -37,6 +48,6 @@ void setup(){
 
 void loop(){
 
-                testeur.typeCable();
-                delay(1000);
+                testeur.typeCable();    // Appel de la fonction
+                delay(3000);         // Attente de 3secondes
 }

@@ -5,7 +5,7 @@
 /// @brief 
 /// @param pinGauche 
 /// @param pinDroite 
-/// @param cables 
+
 
 Testeur::Testeur(int *pinGauche, int *pinDroite)
 {   
@@ -54,6 +54,7 @@ void Testeur::typeCable(){
 
         }
 
+// Condition à remplir pour un cable Droit
    if (brocheOut[0] == couleur[0] && brocheOut[1] == couleur[1] && brocheOut[2] == couleur[2] && brocheOut[3] == couleur[3] && brocheOut[4] == couleur[4] && brocheOut[5] == couleur[5] && brocheOut[6] == couleur[6] && brocheOut[7] == couleur[7])
    {
     /* code */
@@ -69,6 +70,7 @@ void Testeur::typeCable(){
     Serial.println("Le cable est Droit");
    }
    
+// Condition à remplir pour un cable Croisé
     else if (brocheOut[0] == couleur[2] && brocheOut[1] == couleur[5] && brocheOut[2] == couleur[0] && brocheOut[3] == couleur[3] && brocheOut[4] == couleur[4] && brocheOut[5] == couleur[1] && brocheOut[6] == couleur[6] && brocheOut[7] == couleur[7])
    {
     /* code */
@@ -81,9 +83,10 @@ void Testeur::typeCable(){
             Serial.println( couleur[i]);
         }
         
-    Serial.println("Le cable est Croisé");
+    Serial.println("Le cable est Croisé");      // Affichage du type de cable
    }
-   
+
+// Condition par defaut   
    else {
 
     Serial.println("Le cable est Défectueux");
