@@ -1,88 +1,92 @@
 #include <Arduino.h>
 #include "Testeur.hpp"
 
-Testeur::Testeur(int * pinDroiteCable, int * pinGaucheCable, bool etat_ , type_Cable cables)
-{
-    pinDroit = pinDroiteCable;
-    pinGauche = pinGaucheCable;
-    etat = etat_; 
-    type = cables; 
-}
 
-Testeur::~Testeur(){}
+/// @brief 
+/// @param pinGauche 
+/// @param pinDroite 
+/// @param cables 
 
-void Testeur::initialisation() {
-
-}
-
-void Testeur::setEtat(bool val){ etat= val;}
-
-void Testeur::setType( type_Cable valtype){ type=valtype;}
-
-void Testeur::typeCable()
+Testeur::Testeur(int *pinGauche, int *pinDroite)
 {   
-    int data[8];
-
-    for(int i = 0; i < 8; i++)
+    for (size_t i = 0; i < 8; i++)
     {
-        for(int j = 0; j < 8; j++)
-        {   
-            int pDroit = *(pinDroit + i);
-            int pGauche = *(pinGauche + j);
+        /* code */
+            pinO[i] = pinGauche[i];     // Assignation des broches de sortie
+            pinMode(pinO[i], OUTPUT);
 
-            pinMode(pDroit, OUTPUT);
-            pinMode(pGauche, INPUT_PULLDOWN);
-
-            digitalWrite(pDroit, HIGH);
-            delay(100);
-
-            int etat = digitalRead(pGauche);
-            int readValue = 0;
-
-            if(etat == HIGH)
-                readValue = 1;
-            else
-                readValue = 0;
-            
-            digitalWrite(pDroit, LOW);
-
-            if (readValue == 1)
-            {
-                data[i] = j;
-                break;
-            }
-        }
-    }
-
-    bool estEnOrdre = true;
-
-    for (int i = 0; i < 8; i++)
-    {
-        if (data[i] > data[i + 1])
-        {
-            estEnOrdre = false;
-        }
-    }
-    
-    if (estEnOrdre)
-    {
-        setEtat(true);
-        setType(Droit);
-    }
-
-    else if( data[0]==2 && data[1]==5 && data[2]== 0 && data[3]== 3 && data[4]== 4 && data[5]== 1 && data[6]==6 && data[7]==7){
-        setEtat(true);
-        setType(Croisee);
-    }
-
-    else 
-    {
-        setEtat(false);
-        setType(Anormal);
-    }
+            pinI[i] = pinDroite[i];                         // Assignation des broches d'entrée avec résistance de tirage vers le bas
+            pinMode(pinI[i], INPUT_PULLDOWN);
+    } 
 }
 
-void Testeur::affichage()
-{
+/// @brief 
+Testeur::~Testeur(){}
+/// @brief 
+//Cette fonction recherche la première broche active et renvoie sa position
+float Testeur::recherche() {                            
+        int position = 0;
+        for (int i = 0; i < 8; i++)
+        {
+            /* code */
+            int res = digitalRead(pinI[i]);     // Lecture de l'état de la broche d'entrée
+                
+                if (res == 1)
+                {
+                    /* Assignation de la position de la broche active et arret de recherche */
+                    position = i + 1;
+                    break;
+                }      
+        }
+        return position;
+}
+
+void Testeur::typeCable(){
+
+    int brocheOut[8] ;
+        for (int i = 0; i < 8; i++)
+        {
+            /* code */
+            // Activation de la broche de sortie
+            digitalWrite(pinO[i], HIGH);
+            brocheOut[i]= recherche();  // Recherche de la broche active connectée
+            digitalWrite(pinO[i], LOW);    // Désactivation de la broche de sortie
+
+        }
+
+   if (brocheOut[0] == couleur[0] && brocheOut[1] == couleur[1] && brocheOut[2] == couleur[2] && brocheOut[3] == couleur[3] && brocheOut[4] == couleur[4] && brocheOut[5] == couleur[5] && brocheOut[6] == couleur[6] && brocheOut[7] == couleur[7])
+   {
+    /* code */
+        for (size_t i = 0; i < 8; i++)
+        {
+            /* code */
+            Serial.print( brocheOut[i]);
+            Serial.print( "  --------  ");
+            Serial.println( couleur[i]);
+            
+        }
+        
+    Serial.println("Le cable est Droit");
+   }
+   
+    else if (brocheOut[0] == couleur[2] && brocheOut[1] == couleur[5] && brocheOut[2] == couleur[0] && brocheOut[3] == couleur[3] && brocheOut[4] == couleur[4] && brocheOut[5] == couleur[1] && brocheOut[6] == couleur[6] && brocheOut[7] == couleur[7])
+   {
+    /* code */
+        for (size_t i = 0; i < 8; i++)
+        {
+            /* code */
+            // Affichage du resultat
+            Serial.print( brocheOut[i]);
+            Serial.print( "  --------  ");
+            Serial.println( couleur[i]);
+        }
+        
+    Serial.println("Le cable est Croisé");
+   }
+   
+   else {
+
+    Serial.println("Le cable est Défectueux");
+   }
 
 }

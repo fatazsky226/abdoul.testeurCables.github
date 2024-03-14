@@ -1,49 +1,34 @@
 #ifndef TESTEUR_H
 #define TESTEUR_H
 
+
 class Testeur
 {
+
     private:
         /* data */
-        // variable en sortie
-        int * pinDroit ;
-        int * pinGauche;
-        bool etat;
 
-        enum type_Cable{Droit, Croisee, Anormal};
+        int pinI[8];    // tableau des Entrées de signal pour chaque couleur 
 
-        type_Cable type;
+        int pinO[8];    // tableau des sorties de signal pour chaque couleur
+
+        /// @brief 
+
+        const int couleur[8]={1, 2, 3, 4, 5, 6, 7, 8}; // Numerotation des couleur selon un branchement de cable Droit par défaut
         
-
-            
-            /*int or1;
-            int ob1;
-            int vt1;
-            int vb1;
-            int bu1;
-            int bb1;
-            int mr1;
-            int mb1;*/
-        
-        // variable en entrée
-    /*     int or2;
-            int ob2;
-            int vt2;
-            int vb2;
-            int bu2;
-            int bb2;
-            int mr2;
-            int mb2;*/
     public:
-        Testeur(int * pinDroiteCable, int * pinGaucheCable, bool etat_ , type_Cable cables);
-        ~Testeur();
+        /// @brief 
+        /// @param pinGauche 
+        /// @param pinDroite 
+        
+        Testeur(int * pinGauche, int * pinDroite);
 
-        void setEtat( bool val);
-        void setType(type_Cable valtype);
+        ~Testeur(); // Destructeur 
 
-        void initialisation();
-        void affichage();
+        float recherche(); 
+
+       // Fonction qui teste le cable et le type du cable
         void typeCable();
 };
 
-#endif
+#endif     //TESTEUR_HPP
